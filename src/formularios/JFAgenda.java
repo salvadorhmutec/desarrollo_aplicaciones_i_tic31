@@ -5,17 +5,63 @@
  */
 package formularios;
 
+import java.sql.DriverManager;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Zeo
  */
 public class JFAgenda extends javax.swing.JFrame {
 
+    private Connection conexion;
+    private Statement st;
+    private ResultSet rs;
+
+    public void Conectar() {
+        try {
+            conexion = DriverManager.getConnection("jdbc:mysql://localhost/agenda_tic31", "tic31", "Tic.31");
+            st = conexion.createStatement();
+            rs = st.executeQuery("Select * from contactos;");
+            moverPrimerRegistro();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error 000" + ex.getMessage());
+        }
+    }
+
+    public void moverPrimerRegistro() {
+        try {
+            rs.first();
+            llenarDatos();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error 001" + ex.getMessage());
+        }
+    }
+
+    public void llenarDatos() {
+        try {
+            this.jtf_id_contacto.setText(rs.getString("id_contacto"));
+            this.jtf_nombre.setText(rs.getString("nombre"));
+            this.jtf_apellido_paterno.setText(rs.getString("apellido_paterno"));
+            this.jtf_apellido_materno.setText(rs.getString("apellido_materno"));
+            this.jtf_email.setText(rs.getString("email"));
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error 002" + ex.getMessage());
+        }
+    }
+
     /**
      * Creates new form JFAgenda
      */
     public JFAgenda() {
         initComponents();
+        Conectar();
     }
 
     /**
@@ -29,6 +75,16 @@ public class JFAgenda extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jl_titulo = new javax.swing.JLabel();
+        jl_id_contacto = new javax.swing.JLabel();
+        jtf_id_contacto = new javax.swing.JTextField();
+        jl_nombre = new javax.swing.JLabel();
+        jtf_nombre = new javax.swing.JTextField();
+        jl_apellido_paterno = new javax.swing.JLabel();
+        jtf_apellido_paterno = new javax.swing.JTextField();
+        jl_apellido_materno = new javax.swing.JLabel();
+        jtf_apellido_materno = new javax.swing.JTextField();
+        jl_email = new javax.swing.JLabel();
+        jtf_email = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -40,17 +96,71 @@ public class JFAgenda extends javax.swing.JFrame {
         jl_titulo.setText("Agenda");
         jl_titulo.setOpaque(true);
 
+        jl_id_contacto.setText("ID");
+
+        jl_nombre.setText("Nombre");
+
+        jl_apellido_paterno.setText("Apellido Paterno");
+
+        jl_apellido_materno.setText("Apellido Materno");
+
+        jl_email.setText("Email");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jl_titulo, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .addComponent(jl_titulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jl_email, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtf_email, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jl_apellido_materno, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtf_apellido_materno, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jl_apellido_paterno, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtf_apellido_paterno, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jl_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtf_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jl_id_contacto, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtf_id_contacto, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jl_titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 259, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jl_id_contacto)
+                    .addComponent(jtf_id_contacto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jl_nombre)
+                    .addComponent(jtf_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jl_apellido_paterno)
+                    .addComponent(jtf_apellido_paterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jl_apellido_materno)
+                    .addComponent(jtf_apellido_materno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jl_email)
+                    .addComponent(jtf_email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 117, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -104,6 +214,16 @@ public class JFAgenda extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jl_apellido_materno;
+    private javax.swing.JLabel jl_apellido_paterno;
+    private javax.swing.JLabel jl_email;
+    private javax.swing.JLabel jl_id_contacto;
+    private javax.swing.JLabel jl_nombre;
     private javax.swing.JLabel jl_titulo;
+    private javax.swing.JTextField jtf_apellido_materno;
+    private javax.swing.JTextField jtf_apellido_paterno;
+    private javax.swing.JTextField jtf_email;
+    private javax.swing.JTextField jtf_id_contacto;
+    private javax.swing.JTextField jtf_nombre;
     // End of variables declaration//GEN-END:variables
 }
