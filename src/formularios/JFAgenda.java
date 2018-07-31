@@ -44,6 +44,37 @@ public class JFAgenda extends javax.swing.JFrame {
         }
     }
 
+    public void moverRegistroSiguiente() {
+        try {
+            if (!rs.isLast()) {
+                rs.next();
+                llenarDatos();
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error 001" + ex.getMessage());
+        }
+    }
+    
+    public void moverRegistroAnterior() {
+        try {
+            if (!rs.isFirst()) {
+                rs.previous();
+                llenarDatos();
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error 001" + ex.getMessage());
+        }
+    }
+    
+    public void moverUltimoRegistro() {
+        try {
+            rs.last();
+            llenarDatos();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error 001" + ex.getMessage());
+        }
+    }
+
     public void llenarDatos() {
         try {
             this.jtf_id_contacto.setText(rs.getString("id_contacto"));
@@ -85,6 +116,11 @@ public class JFAgenda extends javax.swing.JFrame {
         jtf_apellido_materno = new javax.swing.JTextField();
         jl_email = new javax.swing.JLabel();
         jtf_email = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
+        jb_primer_registro = new javax.swing.JButton();
+        jb_registro_anterior = new javax.swing.JButton();
+        jb_registro_siguiente = new javax.swing.JButton();
+        jb_ultimo_registro = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -106,35 +142,98 @@ public class JFAgenda extends javax.swing.JFrame {
 
         jl_email.setText("Email");
 
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+
+        jb_primer_registro.setBackground(new java.awt.Color(255, 255, 255));
+        jb_primer_registro.setText("|<");
+        jb_primer_registro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jb_primer_registroActionPerformed(evt);
+            }
+        });
+
+        jb_registro_anterior.setText("<<");
+        jb_registro_anterior.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jb_registro_anteriorActionPerformed(evt);
+            }
+        });
+
+        jb_registro_siguiente.setText(">>");
+        jb_registro_siguiente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jb_registro_siguienteActionPerformed(evt);
+            }
+        });
+
+        jb_ultimo_registro.setText(">|");
+        jb_ultimo_registro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jb_ultimo_registroActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(jb_primer_registro)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jb_registro_anterior)
+                .addGap(41, 41, 41)
+                .addComponent(jb_registro_siguiente)
+                .addGap(18, 18, 18)
+                .addComponent(jb_ultimo_registro)
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jb_primer_registro)
+                    .addComponent(jb_registro_anterior)
+                    .addComponent(jb_registro_siguiente)
+                    .addComponent(jb_ultimo_registro))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jl_titulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jl_email, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtf_email, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jl_apellido_materno, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtf_apellido_materno, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jl_apellido_paterno, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtf_apellido_paterno, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jl_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtf_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jl_id_contacto, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtf_id_contacto, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(79, Short.MAX_VALUE))
+                        .addGap(26, 26, 26)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jl_email, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jtf_email, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jl_apellido_materno, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jtf_apellido_materno, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jl_apellido_paterno, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jtf_apellido_paterno, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jl_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jtf_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jl_id_contacto, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jtf_id_contacto, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,7 +259,9 @@ public class JFAgenda extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jl_email)
                     .addComponent(jtf_email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 117, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 66, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -176,6 +277,22 @@ public class JFAgenda extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jb_ultimo_registroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_ultimo_registroActionPerformed
+        moverUltimoRegistro();
+    }//GEN-LAST:event_jb_ultimo_registroActionPerformed
+
+    private void jb_primer_registroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_primer_registroActionPerformed
+        moverPrimerRegistro();
+    }//GEN-LAST:event_jb_primer_registroActionPerformed
+
+    private void jb_registro_anteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_registro_anteriorActionPerformed
+        moverRegistroAnterior();
+    }//GEN-LAST:event_jb_registro_anteriorActionPerformed
+
+    private void jb_registro_siguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_registro_siguienteActionPerformed
+        moverRegistroSiguiente();
+    }//GEN-LAST:event_jb_registro_siguienteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -214,6 +331,11 @@ public class JFAgenda extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JButton jb_primer_registro;
+    private javax.swing.JButton jb_registro_anterior;
+    private javax.swing.JButton jb_registro_siguiente;
+    private javax.swing.JButton jb_ultimo_registro;
     private javax.swing.JLabel jl_apellido_materno;
     private javax.swing.JLabel jl_apellido_paterno;
     private javax.swing.JLabel jl_email;
