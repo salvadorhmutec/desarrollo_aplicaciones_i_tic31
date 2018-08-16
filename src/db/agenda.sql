@@ -10,13 +10,25 @@ CREATE TABLE contactos(
     email varchar(100) NOT NULL
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+CREATE TABLE usuarios(
+    usuario varchar(50) NOT NULL PRIMARY KEY,
+    clave varchar(32) NOT NULL COMMENT 'clave del usuario cifrada con MD5',
+    nivel varchar(15) NOT NULL DEFAULT 'invitado' COMMENT 'administrador|invitado',
+    estado varchar(15) NOT NULL DEFAULT 'activo' COMMENT 'activo|inactivo'
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+INSERT INTO usuarios(usuario,clave,nivel,estado)
+VALUES
+('admin',MD5('1234'),'administador','activo'),
+('invitado',MD5('1234'),'invitado','activo');
+
 INSERT INTO contactos (nombre, apellido_paterno, apellido_materno, email)
 VALUES 
 ('Dejah','Thoris','Carter','dejah@barsoon.com'),
-('Jhon','Carter','Carter','jhon@barsoon.com'),
+('Carthoris','Carter','Thoris','carthoris@barsoon.com'),
+('Jhon','Carter','Carter','jhon@barsoon.com');
 
 CREATE USER 'tic31'@'localhost' IDENTIFIED BY 'Tic.31';
 GRANT ALL PRIVILEGES ON agenda_tic31.* TO 'tic31'@'localhost';
 FLUSH PRIVILEGES;
-
-
