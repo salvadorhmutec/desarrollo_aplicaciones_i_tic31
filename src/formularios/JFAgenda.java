@@ -10,8 +10,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -23,15 +21,19 @@ public class JFAgenda extends javax.swing.JFrame {
     private Connection conexion;
     private Statement st;
     private ResultSet rs;
+    private String sql;
+    private JFMenu jf_menu;
 
-    public void Conectar() {
+    public final void Conectar() {
         try {
-            conexion = DriverManager.getConnection("jdbc:mysql://localhost/agenda_tic31", "tic31", "Tic.31");
+            conexion = DriverManager.getConnection("jdbc:mysql://localhost:3308/agenda_tic31", "tic31", "Tic.31");
             st = conexion.createStatement();
-            rs = st.executeQuery("Select * from contactos;");
+            sql="Select * from contactos;";
+            System.out.println(sql);
+            rs = st.executeQuery(sql);
             moverPrimerRegistro();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error 000" + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Error 000: " + ex.getMessage());
         }
     }
 
@@ -40,7 +42,7 @@ public class JFAgenda extends javax.swing.JFrame {
             rs.first();
             llenarDatos();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error 001" + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Error 001: " + ex.getMessage());
         }
     }
 
@@ -51,7 +53,7 @@ public class JFAgenda extends javax.swing.JFrame {
                 llenarDatos();
             }
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error 001" + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Error 002: " + ex.getMessage());
         }
     }
     
@@ -62,7 +64,7 @@ public class JFAgenda extends javax.swing.JFrame {
                 llenarDatos();
             }
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error 001" + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Error 003: " + ex.getMessage());
         }
     }
     
@@ -71,7 +73,7 @@ public class JFAgenda extends javax.swing.JFrame {
             rs.last();
             llenarDatos();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error 001" + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Error 004: " + ex.getMessage());
         }
     }
 
@@ -83,7 +85,7 @@ public class JFAgenda extends javax.swing.JFrame {
             this.jtf_apellido_materno.setText(rs.getString("apellido_materno"));
             this.jtf_email.setText(rs.getString("email"));
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error 002" + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Error 005: " + ex.getMessage());
         }
     }
 
@@ -91,6 +93,12 @@ public class JFAgenda extends javax.swing.JFrame {
      * Creates new form JFAgenda
      */
     public JFAgenda() {
+        initComponents();
+        Conectar();
+    }
+    
+    public JFAgenda(JFMenu jf_menu) {
+        this.jf_menu = jf_menu;
         initComponents();
         Conectar();
     }
@@ -121,12 +129,13 @@ public class JFAgenda extends javax.swing.JFrame {
         jb_registro_anterior = new javax.swing.JButton();
         jb_registro_siguiente = new javax.swing.JButton();
         jb_ultimo_registro = new javax.swing.JButton();
+        jb_cerrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jl_titulo.setBackground(new java.awt.Color(102, 204, 255));
+        jl_titulo.setBackground(new java.awt.Color(51, 102, 255));
         jl_titulo.setForeground(new java.awt.Color(255, 255, 255));
         jl_titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jl_titulo.setText("Agenda");
@@ -200,40 +209,53 @@ public class JFAgenda extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jb_cerrar.setText("Menú");
+        jb_cerrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jb_cerrarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jl_titulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jl_email, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jtf_email, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jl_apellido_materno, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jtf_apellido_materno, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jl_apellido_paterno, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jtf_apellido_paterno, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jl_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jtf_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jl_id_contacto, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jtf_id_contacto, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(22, Short.MAX_VALUE))
+                                .addGap(26, 26, 26)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jl_email, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jtf_email, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jl_apellido_materno, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jtf_apellido_materno, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jl_apellido_paterno, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jtf_apellido_paterno, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jl_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jtf_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jl_id_contacto, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jtf_id_contacto, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(0, 10, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jb_cerrar)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -261,7 +283,9 @@ public class JFAgenda extends javax.swing.JFrame {
                     .addComponent(jtf_email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 66, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addComponent(jb_cerrar)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -293,6 +317,11 @@ public class JFAgenda extends javax.swing.JFrame {
     private void jb_registro_siguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_registro_siguienteActionPerformed
         moverRegistroSiguiente();
     }//GEN-LAST:event_jb_registro_siguienteActionPerformed
+
+    private void jb_cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_cerrarActionPerformed
+        jf_menu.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jb_cerrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -332,6 +361,7 @@ public class JFAgenda extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JButton jb_cerrar;
     private javax.swing.JButton jb_primer_registro;
     private javax.swing.JButton jb_registro_anterior;
     private javax.swing.JButton jb_registro_siguiente;
