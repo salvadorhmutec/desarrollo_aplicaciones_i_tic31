@@ -20,8 +20,8 @@ CREATE TABLE usuarios(
 
 INSERT INTO usuarios(usuario,clave,nivel,estado)
 VALUES
-('admin',MD5('1234'),'administador','activo'),
-('invitado',MD5('1234'),'invitado','activo');
+('administrador',MD5('administrador'),'administador','activo'),
+('invitado',MD5('invitado'),'invitado','activo');
 
 INSERT INTO contactos (nombre, apellido_paterno, apellido_materno, email)
 VALUES 

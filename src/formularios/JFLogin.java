@@ -13,8 +13,6 @@ import java.sql.Statement;
 import javax.swing.JOptionPane;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -150,6 +148,7 @@ public class JFLogin extends javax.swing.JFrame {
             int existe = rs.getInt("existe");
             if (existe == 1) {
                 JFMenu jf_menu = new JFMenu();
+                jf_menu.setLocationRelativeTo(null); //centra el JFrame
                 jf_menu.setVisible(true);
                 this.setVisible(false);
             }else{
@@ -212,7 +211,9 @@ public class JFLogin extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFLogin().setVisible(true);
+                JFLogin jfl = new JFLogin();
+                jfl.setLocationRelativeTo(null); //Centra el JFrame
+                jfl.setVisible(true);
             }
         });
     }

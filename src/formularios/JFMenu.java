@@ -10,7 +10,7 @@ package formularios;
  * @author Zeo
  */
 public class JFMenu extends javax.swing.JFrame {
-
+JFAgenda jf_agenda = new JFAgenda(this);
     /**
      * Creates new form JFMenu
      */
@@ -82,7 +82,7 @@ public class JFMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jb_agendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_agendaActionPerformed
-        JFAgenda jf_agenda = new JFAgenda();
+//        JFAgenda jf_agenda = new JFAgenda(this);
         jf_agenda.setLocationRelativeTo(null); //Centra el JFrame
         jf_agenda.setVisible(true);
         this.setVisible(false);
